@@ -28,7 +28,7 @@ func (z *Zsuite) RecordBooks(memberID int) ([]*RecordBook, error) {
 		if n != "Involvement Report" && n != "Short Term Record Books" {
 			a, err := z.Activities(r.ID)
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("[%d]: %w", r.ID, err)
 			}
 			r.Activities = a
 

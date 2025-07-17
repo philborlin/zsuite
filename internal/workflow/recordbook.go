@@ -33,16 +33,22 @@ func chooseRecordBook(rs []*zsuite.RecordBook, ignore []string) (*zsuite.RecordB
 }
 
 func copyActivities(z *zsuite.Zsuite, from, to *zsuite.RecordBook) error {
-	for i, a := range from.Activities {
-		z.UpdateActivity(to.ID, i, a)
+	err := z.PutActivities(to.ID, from.Activities)
+	if err != nil {
+		return err
 	}
+
+	// for i, a := range from.Activities {
+	// 	z.UpdateActivity(to.ID, i, a)
+	// }
 
 	as, err := z.Activities(to.ID)
 	if err != nil {
 		return err
 	}
-
-	to.Activities = as
+	for i, a := range as {
+		fmt.Printf("%d: %v\n", i, a)
+	}
 
 	return nil
 }

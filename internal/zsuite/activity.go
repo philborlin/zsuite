@@ -10,6 +10,15 @@ type Activity struct {
 	Activity string `json:"activity"`
 }
 
+func (z *Zsuite) PutActivities(recordBook int, activities []*Activity) error {
+	err := z.put(fmt.Sprintf("/api/record-books/%d/entries/activity", recordBook), &activities)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (z *Zsuite) Activities(recordBook int) ([]*Activity, error) {
 	var activities []*Activity
 
@@ -22,9 +31,10 @@ func (z *Zsuite) Activities(recordBook int) ([]*Activity, error) {
 }
 
 func (z *Zsuite) UpdateActivity(recordBook int, index int, a *Activity) error {
-	fmt.Printf("PUT /api/record-books/%d/entries/activity/%d - %v\n", recordBook, index, a)
+	s := fmt.Sprintf("/api/record-books/%d/entries/activity/%d", recordBook, index)
+	fmt.Printf("PUT %s - %v\n", s, a)
 
-	err := z.put(fmt.Sprintf("/api/record-books/%d/entries/activity/%d", recordBook, index), a)
+	err := z.put(s, a)
 	if err != nil {
 		return err
 	}

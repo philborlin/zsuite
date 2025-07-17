@@ -67,13 +67,22 @@ func (z *Zsuite) do(req *http.Request, respBody any) error {
 		return err
 	}
 
+	if resp.StatusCode >= 300 {
+		fmt.Println(resp.Status)
+	}
+
 	if respBody != nil {
 		bsr, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return err
 		}
 
-		return json.Unmarshal(bsr, respBody)
+		err = json.Unmarshal(bsr, respBody)
+		if err != nil {
+			fmt.Printf("zsuite.do() %s - %v\n", string(bsr), respBody)
+		}
+
+		return err
 	}
 
 	return nil

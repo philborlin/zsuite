@@ -1,6 +1,7 @@
 package workflow
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -32,20 +33,28 @@ func Workflow() error {
 		return err
 	}
 
+	fmt.Printf("Chose enrollment: %v\n", e)
+
 	rs, err := zsuite.RecordBooks(e.MemberID)
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("Found record books: %v\n", rs)
 
 	from, err := chooseRecordBook(rs, []string{})
 	if err != nil {
 		return err
 	}
 
+	fmt.Printf("chooseRecordBook (1): %v\n", rs)
+
 	to, err := chooseRecordBook(rs, []string{from.Name})
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("chooseRecordBook (2): %v\n", rs)
 
 	return copyActivities(zsuite, from, to)
 }
